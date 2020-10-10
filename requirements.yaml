@@ -1,0 +1,9 @@
+name: Kaggle_0
+channels:
+  - conda-forge
+  - pytorch
+  - defaults
+dependencies:
+  - pytorch=1.6.0
+prefix: /Users/sijinkim/miniconda3/envs/Kaggle_0
+
