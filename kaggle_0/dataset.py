@@ -6,9 +6,9 @@ from torch.utils.data import Dataset
 
 
 DATA_ROOT = os.path.join(
-                os.path.dirname(os.path.dirname(__file__)),
-                'data'
-            )
+    os.path.dirname(os.path.dirname(__file__)),
+    'data'
+)
 
 
 class PhotoDataset(Dataset):
@@ -22,7 +22,7 @@ class PhotoDataset(Dataset):
     def __len__(self):
         return len(self.paths)
 
-      
+
 class MonetDataset(Dataset):
     def __init__(self):
         super(MonetDataset, self).__init__()
