@@ -79,6 +79,8 @@ class Generator(nn.Module):
                                 relu=0.0,
                                 reflection_padding=True),
 
+            nn.ReflectionPad2d(3),
+
             ConvBlock(in_channels=1 * filters,
                       out_channels=out_channels,
                       kernel_size=7,

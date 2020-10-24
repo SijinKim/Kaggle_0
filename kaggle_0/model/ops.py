@@ -1,3 +1,5 @@
+import numpy as np
+
 import torch
 import torch.nn as nn
 
@@ -43,3 +45,9 @@ def init_weights(net, init_type='normal', init_gain=0.02):
 
     print('initialize network with %s' % init_type)
     net.apply(init_func)
+
+
+def toTensor(nd_arr_image):
+    tensor_image = torch.FloatTensor(
+        np.array(nd_arr_image)).permute(0, 3, 1, 2).contiguous()
+    return tensor_image
