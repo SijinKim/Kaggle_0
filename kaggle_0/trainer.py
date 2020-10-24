@@ -48,7 +48,7 @@ class Trainer():
         # Define loss functions
         self.cycle_loss_fn = nn.L1Loss().to(self.device)
         self.gan_loss_fn = nn.BCELoss().to(self.device)
-        self.ident_loss_fn = nn.L1loss().to(self.device)
+        self.ident_loss_fn = nn.L1Loss().to(self.device)
 
         # Define optimizers for generators and discriminators
         self.optimizer_G = torch.optim.Adam(
@@ -65,13 +65,13 @@ class Trainer():
         Monet_dataset = MonetDataset()
 
         self.Photo_loader = DataLoader(dataset=Photo_dataset,
-                                       batch_size=opt.batch_Size,
-                                       shuffl=True,
-                                       num_works=opt.num_works)
+                                       batch_size=opt.batch_size,
+                                       shuffle=True,
+                                       num_workers=opt.num_works)
         self.Monet_loader = DataLoader(dataset=Monet_dataset,
-                                       batch_size=opt.batch_Size,
-                                       shuffl=True,
-                                       num_works=opt.num_works)
+                                       batch_size=opt.batch_size,
+                                       shuffle=True,
+                                       num_workers=opt.num_works)
 
     def train(self):
         # writer = SummaryWriter(log_dir=self.log_path)
@@ -84,8 +84,8 @@ class Trainer():
             self.netD_b.train()
 
             for batch, data in enumerate(zip(self.Photo_loader, self.Monet_loader)):
-                input_a = toTensor(data[0].to(self.device))  # photo images
-                input_b = toTensor(data[1].to(self.device))  # monet images
+                input_a = toTensor(data[0].to(self.device))  # photo images(a)
+                input_b = toTensor(data[1].to(self.device))  # monet images(b)
 
                 # forward netG
                 output_b = self.netG_a2b(input_a)
@@ -121,7 +121,7 @@ class Trainer():
                 loss_D = loss_D_a + loss_D_b
 
                 # backward Discriminators
-                loss_D.backward()
+                loss_D.backward(retain_graph=True)
                 self.optimizer_D.step()
 
                 # backward netG
@@ -156,6 +156,8 @@ class Trainer():
                 # backward Generators
                 loss_G.backward()
                 self.optimizer_G.step()
+
+                print(f'batch: {batch}, loss_G: {loss_G}')
 
     def set_requires_grad(self, nets, requires_grad=False):
         if not isinstance(nets, list):
